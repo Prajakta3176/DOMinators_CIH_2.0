@@ -6,33 +6,34 @@ const pastWorkData = [
     issue: "Open pothole near railway station",
     date: "Reported: Apr 2 | Resolved: Apr 6",
     status: "Resolved",
-    beforeImg: "/images/pothole-before.jpg",
-    afterImg: "/images/pothole-after.jpg"
+    beforeImg: "../src/assets/before/road.jpg",
+    afterImg: "../src/assets/after/road.jpg"
   },
   {
     location: "Sector 22, Noida",
-    issue: "Non-functional streetlight",
+    issue: "Polluted River",
     date: "Reported: Mar 12 | Escalated to Electrical Dept",
-    status: "Escalated",
-    beforeImg: "/images/streetlight-before.jpg",
-    afterImg: "/images/streetlight-after.jpg"
+    status: "Resolved",
+    beforeImg: "../src/assets/before/river.jpg",
+    afterImg: "../src/assets/after/river.jpg"
   },
   {
     location: "Kurla East, Mumbai",
     issue: "Open pothole near railway station",
     date: "Reported: Apr 2 | Resolved: Apr 6",
     status: "Resolved",
-    beforeImg: "/images/pothole-before.jpg",
-    afterImg: "/images/pothole-after.jpg"
+    beforeImg: "../src/assets/before/road.jpg",
+    afterImg: "../src/assets/after/road.jpg"
   },
   {
     location: "Sector 22, Noida",
-    issue: "Non-functional streetlight",
+    issue: "Polluted River",
     date: "Reported: Mar 12 | Escalated to Electrical Dept",
-    status: "Escalated",
-    beforeImg: "/images/streetlight-before.jpg",
-    afterImg: "/images/streetlight-after.jpg"
+    status: "Resolved",
+    beforeImg: "../src/assets/before/river.jpg",
+    afterImg: "../src/assets/after/river.jpg"
   },
+  
 ];
 
 const PastWork = () => {

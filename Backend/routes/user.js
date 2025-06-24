@@ -11,7 +11,6 @@ userRouter.post("/citizen/signin", signinCitizen);
 userRouter.post("/citizen/addComplaint", authenticateToken, upload.single("image"), addComplaint);
 userRouter.patch("/citizen/upvoteIssue", authenticateToken, upVoteIssues);
 
-//// -------- GOVERNMENT ROUTES ----------
 userRouter.post("/government/signup", signupGov);
 userRouter.post("/government/signin", signinGov);
 

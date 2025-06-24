@@ -5,11 +5,33 @@ import axios from 'axios';
 const IssueBox = ({data, handleVote}) => {
 
 
-  const {title, category,status, description, location, _id,upvotes} = data;
+  const {title, category,status, description, city, _id,upvotes} = data;
+const role = localStorage.getItem("role"); 
 
+const handleChangeStatus = async (complaintId, newStatus) => {
+  try {
+    const token = localStorage.getItem("token");
 
-  
+    const res = await axios.patch(
+      "http://localhost:8080/api/user/complaint/change-complaint-status",
+      {
+        id: complaintId,
+        status: newStatus // 👈 Must match one of the valid ones
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
 
+    alert("Status updated!");
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert(err?.response?.data?.message || "Failed to update status");
+  }
+};
 
     const trimText = (text, maxLength = 50) => {
     if (!text) return '';
@@ -34,11 +56,23 @@ const IssueBox = ({data, handleVote}) => {
       <p className="text-sm text-gray-700 mt-1">{trimText(description)}</p>
 
       <div className="text-xs text-gray-500 mt-3 flex justify-between">
-        <div>📍 {location}</div>
+        <div>📍 {city}</div>
         <button className='cursor-pointer' onClick={()=>handleVote(_id)}>
           <ArrowBigUp/> {upvotes}
         </button>
       </div>
+      {
+  role === "government" && (
+    <div className="mt-3">
+      <button
+        onClick={() => handleChangeStatus(_id)}
+        className='text-sm text-white bg-blue-600 px-3 py-1 rounded hover:bg-blue-700'
+      >
+        Update Status
+      </button>
+    </div>
+  )
+}
     </div>
   )
 }

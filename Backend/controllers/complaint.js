@@ -28,7 +28,6 @@ export const getMyComplaints = async(req,res)=>{
         res.status(500).json({message: "Internal server error."});
     }
 }
-
 export const getDepartmentComplaints = async (req, res) => {
   try {
     const govId = req.user.userId; // assuming token middleware se userId aa rha
@@ -41,6 +40,33 @@ export const getDepartmentComplaints = async (req, res) => {
     const issues = await Issue.find({
       category: "Drainage",
       city:  "Nagpur",
+    }).populate("citizen", "fullname number") // Populate citizen details
+      .sort({ createdAt: -1 }); // Sort by creation date, most recent first
+
+    res.status(200).json({
+      success: true,
+      // message: `Complaints for ${govUser.department} in ${govUser.city}`,
+      data: issues,
+    });
+  } catch (err) {
+    console.log("Error fetching department complaints:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getComplaintByCity = async (req, res) => {
+  try {
+    // const govId = req.user.userId; // assuming token middleware se userId aa rha
+    // const govUser = await Government.findById(govId);
+    const userId = req.user.userId;
+    const city = req.params.city;
+    const user = await Citizen.findById(userId);
+    if(!user){
+      return res.json({message: "SignIn first!"});
+    }
+
+    const issues = await Issue.find({
+      city:  city,
     }).populate("citizen", "fullname number") // Populate citizen details
       .sort({ createdAt: -1 }); // Sort by creation date, most recent first
 

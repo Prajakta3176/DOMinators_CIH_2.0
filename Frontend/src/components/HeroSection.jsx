@@ -4,6 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import MiniNavBar from "./MiniNavBar";
 
 const HeroSection = () => {
+  const role = localStorage.getItem("role");
   return (
     <section className="pt-28 bg-[linear-gradient(to_bottom,_#06ACF180,_#FFFFFF82)] text-white">
         <MiniNavBar />

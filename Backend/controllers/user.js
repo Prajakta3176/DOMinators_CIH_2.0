@@ -19,7 +19,7 @@ console.log("👉 User from token:", req.user);
     }
 
     const { title, description, category, city,lat,lng } = req.body;
-    const coordinates = JSON.parse(req.body.coordinates); // ✅ Parse JSON
+    // const coordinates = JSON.parse(req.body.coordinates); // ✅ Parse JSON
     const citizenId = req.headers["id"];
 
     if (!title || !description || !category || !citizenId || !city) {
@@ -36,14 +36,14 @@ console.log("👉 User from token:", req.user);
       return res.status(400).json({ message: "Title already exists." });
     }
 
-    const imagePath = req.file ? req.file.path : null;
+    // const imagePath = req.file ? req.file.path : null;
 
     const newIssue = await Issue.create({
       title,
       description,
       category,
-      image: imagePath,
-      coordinates,
+      // image: imagePath,
+      // coordinates,
       citizen: citizenId,
       city,
        coordinates: {
@@ -169,17 +169,18 @@ export const signinCitizen = async (req, res) => {
 
 
 export const signupGov = async (req, res) => {
+    const { fullname, number, password, department, city ,email} = req.body;
+console.log(req.body);
   try {
-    const { fullname, number, password, department, city } = req.body;
-    if (!fullname || !number || !password || !department || !city) {
+    if (!fullname || !number || !password || !department || !city || !email) {
       return res.status(400).json({ message: "All fields are required!" });
     }
 
     const userExist = await Government.findOne({ number });
     if (userExist) return res.status(400).json({ message: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await Government.create({ fullname, number, password: hashedPassword, department, city });
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await Government.create({ fullname, number, password, department, city,email });
 
     const token = jwt.sign(
       { userId: user._id, role: "government" },
@@ -189,7 +190,7 @@ export const signupGov = async (req, res) => {
 
     res.status(201).json({ success: true, user: { id: user._id, fullname, number, role: "government", token } });
   } catch (err) {
-    console.error(err);
+    console.log("Signup issue : " , err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -198,10 +199,14 @@ export const signinGov = async (req, res) => {
   try {
     const { number, password } = req.body;
     const user = await Government.findOne({ number });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user) return res.status(400).json({ message: "1.Invalid credentials" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    // const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = false;
+    if(password === user.password){
+      isMatch = true;
+    }
+    if (!isMatch) return res.status(400).json({ message: "2.Invalid credentials" });
 
     const token = jwt.sign(
       { userId: user._id, role: "government" },
